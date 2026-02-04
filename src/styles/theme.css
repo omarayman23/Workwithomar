@@ -128,6 +128,11 @@
     @apply bg-background text-foreground;
   }
 
+  html,
+  body {
+    background-color: #0a0a0f;
+  }
+
   /**
   * Default typography styles for HTML elements (h1-h4, p, label, button, input).
   * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
@@ -178,4 +183,61 @@
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
+}
+
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
+@keyframes webMove {
+  0% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    opacity: 0.45;
+  }
+  50% {
+    background-position: 100% 60%, 40% 100%, 80% 20%, 20% 80%;
+    opacity: 0.7;
+  }
+  100% {
+    background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+    opacity: 0.45;
+  }
+}
+
+.moving-web {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.08), transparent 45%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 42px),
+    repeating-linear-gradient(315deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 46px);
+  background-size: 180% 180%, 160% 160%, 220% 220%, 220% 220%;
+  animation: webMove 14s ease-in-out infinite;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.static-web {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.12), transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.08), transparent 45%),
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 1px, transparent 1px, transparent 42px),
+    repeating-linear-gradient(315deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 46px);
+  background-size: 180% 180%, 160% 160%, 220% 220%, 220% 220%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@keyframes flashPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.flash-pulse {
+  animation: flashPulse 1.2s ease-in-out 3;
 }

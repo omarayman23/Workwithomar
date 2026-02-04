@@ -1,3 +1,4 @@
+import React from "react";
 import { motion } from "motion/react";
 import { Heart } from "lucide-react";
 
@@ -15,16 +16,11 @@ export function Footer({ onNavigate }: FooterProps) {
   ];
 
   return (
-    <footer className="bg-[#0a0a0a] text-white border-t border-white/5">
+    <footer className="bg-[#0a0a0f] text-white border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
           {/* Left - Status */}
-          <div className="flex flex-col md:flex-row items-center gap-4">
-            <div className="flex items-center gap-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 px-4 py-2 rounded-full border border-green-500/30">
-              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-              <span className="text-sm text-green-200">Available for Work</span>
-            </div>
-          </div>
+          <div className="flex flex-col md:flex-row items-center gap-4"></div>
 
           {/* Center - Navigation Links */}
           <div className="flex gap-8">

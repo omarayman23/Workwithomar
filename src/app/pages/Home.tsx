@@ -1,5 +1,6 @@
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, Sparkles, Zap, Brain, Cloud, Code2 } from "lucide-react";
+import { ArrowRight, Sparkles, MapPin } from "lucide-react";
 import { Button } from "../components/ui/button";
 
 interface HomeProps {
@@ -7,175 +8,193 @@ interface HomeProps {
 }
 
 export function Home({ onNavigate }: HomeProps) {
-  const services = [
+  const [isBackgroundLive, setIsBackgroundLive] = useState(true);
+  const lines = useMemo(
+    () => [
+      "// Hey, I'm Omar.",
+      "// I am a sophomore at George Mason University.",
+      "// Major: Computer Science.",
+      "// I build clean, reliable software and AI systems.",
+    ],
+    []
+  );
+
+  const focusAreas = [
     {
-      icon: <Code2 className="w-6 h-6" />,
-      title: "API Integration & Backend",
-      description: "REST & GraphQL expertise, OAuth/JWT security, microservices architecture, and event streaming with Kafka.",
-      gradient: "from-purple-500/20 to-purple-500/5 border-purple-500/20"
+      label: "AI Systems",
+      summary: "Smart features that automate work and make products feel intelligent.",
+      highlights: ["RAG search", "Agent workflows", "Automation"],
     },
     {
-      icon: <Brain className="w-6 h-6" />,
-      title: "Agentic Workflows & AI",
-      description: "Multi-agent systems with autonomous orchestration, Agentic RAG for intelligent retrieval, and custom LLM fine-tuning.",
-      gradient: "from-blue-500/20 to-blue-500/5 border-blue-500/20"
+      label: "Full-Stack",
+      summary: "Clean UI and solid engineering that works fast and scales well.",
+      highlights: ["React + TS", "APIs", "Performance"],
     },
     {
-      icon: <Zap className="w-6 h-6" />,
-      title: "Full-Stack Development",
-      description: "Type-safe architecture with Next.js & TypeScript, premium UX design with motion-rich interfaces and Apple-grade aesthetics.",
-      gradient: "from-cyan-500/20 to-cyan-500/5 border-cyan-500/20"
+      label: "Product Design",
+      summary: "Simple, modern design that helps users finish tasks quickly.",
+      highlights: ["UX flows", "Prototypes", "Usability"],
     },
-    {
-      icon: <Cloud className="w-6 h-6" />,
-      title: "Cloud & Infrastructure",
-      description: "Edge-first deployment, serverless architecture for sub-100ms latency, and automated DevOps with zero-downtime CI/CD.",
-      gradient: "from-emerald-500/20 to-emerald-500/5 border-emerald-500/20"
-    }
   ];
 
+  const [activeFocus, setActiveFocus] = useState(0);
+
+  const fullText = useMemo(() => lines.join("\n"), [lines]);
+  const [typedText, setTypedText] = useState("");
+  const [isDone, setIsDone] = useState(false);
+
+  useEffect(() => {
+    let index = 0;
+    const speed = 22;
+    const interval = setInterval(() => {
+      index += 1;
+      setTypedText(fullText.slice(0, index));
+      if (index >= fullText.length) {
+        clearInterval(interval);
+        setIsDone(true);
+      }
+    }, speed);
+
+    return () => clearInterval(interval);
+  }, [fullText]);
+
   return (
-    <section className="min-h-screen bg-[#0a0a0a] text-white relative overflow-hidden">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10"></div>
-      
-      {/* Grid pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:72px_72px]"></div>
+    <section className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,122,26,0.18),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(124,92,255,0.18),transparent_40%),radial-gradient(circle_at_50%_70%,rgba(32,198,255,0.12),transparent_45%)]"></div>
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.03)_1px,transparent_1px)] bg-[size:84px_84px]"></div>
+      <div className={`absolute inset-0 opacity-60 ${isBackgroundLive ? "moving-web" : "static-web"}`}></div>
 
       <div className="relative z-10 container mx-auto px-6 py-32">
-        {/* Hero Content */}
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-4xl mx-auto text-center mb-20"
-          >
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 items-center">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
-              className="inline-flex items-center gap-2 bg-gradient-to-r from-green-500/20 to-emerald-500/20 px-4 py-2 rounded-full border border-green-500/20 mb-8"
-            >
-              <Sparkles className="w-4 h-4 text-green-400" />
-              <span className="text-sm text-green-200">Available for Work</span>
-            </motion.div>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-              className="text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-white via-white to-gray-400 bg-clip-text text-transparent leading-tight"
+              transition={{ duration: 0.8, ease: "easeOut" }}
             >
-              Turning Vision into Digital Reality
-            </motion.h1>
+              <div className="inline-flex items-center gap-2 bg-white/5 px-4 py-2 rounded-full border border-white/10 mb-8">
+                <Sparkles className="w-4 h-4 text-[#FFB15C]" />
+                <span className="text-sm text-[#FFD6A5]">About Me</span>
+              </div>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-              className="text-xl text-gray-400 mb-10 leading-relaxed"
-            >
-              Full-stack engineer specializing in AI-powered systems, scalable backend architecture, 
-              and premium user experiences. From intelligent workflows to edge-first infrastructure.
-            </motion.p>
+              <h1 className="text-5xl lg:text-7xl mb-6 leading-tight">
+                Turning Visual Dreams into Digital Reality
+              </h1>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="flex flex-wrap gap-4 justify-center"
-            >
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white rounded-full px-8 shadow-lg shadow-purple-500/30"
-                onClick={() => onNavigate("work")}
-              >
-                View Projects
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-white/20 text-white bg-transparent hover:bg-white/10 rounded-full px-8"
-                onClick={() => onNavigate("contact")}
-              >
-                Start a Project
-              </Button>
-            </motion.div>
-          </motion.div>
+              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                <div className="flex items-center justify-between text-xs text-gray-400 mb-4">
+                  <span>intro.ts</span>
+                  <span className="text-[#FFD166]">typing…</span>
+                </div>
+                <pre className="text-sm md:text-base text-gray-200 font-mono leading-relaxed whitespace-pre-wrap min-h-[170px]">
+                  {typedText}
+                  {!isDone && <span className="inline-block w-2 h-5 bg-[#FFD166] align-middle ml-1 animate-pulse" />}
+                </pre>
+              </div>
 
-          {/* Services Grid */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="mb-16"
-          >
-            <h2 className="text-3xl text-center mb-12 bg-gradient-to-r from-white to-gray-500 bg-clip-text text-transparent">
-              Core Expertise
-            </h2>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 + index * 0.1, duration: 0.6 }}
-                  whileHover={{ y: -5 }}
-                  className={`bg-gradient-to-br ${service.gradient} backdrop-blur-sm rounded-2xl p-8 border transition-all duration-300 cursor-pointer group`}
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Button
+                  size="lg"
+                  className="bg-white text-black hover:bg-white/90 rounded-full px-8 shadow-lg shadow-white/10"
+                  onClick={() => onNavigate("work")}
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl bg-white/5 text-purple-400 group-hover:scale-110 transition-transform">
-                      {service.icon}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl mb-2 group-hover:text-purple-200 transition-colors">
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-400 text-sm leading-relaxed">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
+                  View Projects
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-white/20 text-white bg-transparent hover:bg-white/10 rounded-full px-8"
+                  onClick={() => onNavigate("contact")}
+                >
+                  Start a Project
+                </Button>
+              </div>
+            </motion.div>
 
-          {/* Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6"
-          >
-            <div className="text-center">
-              <div className="text-4xl mb-2 bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
-                100%
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+              className="relative"
+            >
+              <div className="space-y-6">
+                <div className="rounded-[32px] border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex items-center justify-between mb-4 gap-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-300">
+                      <MapPin className="w-4 h-4 text-[#FFB15C]" />
+                      Leesburg, VA
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsBackgroundLive((prev) => !prev)}
+                      className="text-xs text-gray-200 bg-white/10 border border-white/10 rounded-full px-3 py-1 hover:bg-white/20 transition-colors"
+                      aria-pressed={!isBackgroundLive}
+                    >
+                      {isBackgroundLive ? "Pause background" : "Play background"}
+                    </button>
+                  </div>
+
+                  <div className="rounded-2xl overflow-hidden border border-white/10 bg-[#0b0b14]">
+                    <iframe
+                      title="Leesburg VA Map"
+                      className="w-full h-[300px] sm:h-[340px]"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=-77.66%2C39.06%2C-77.47%2C39.18&layer=mapnik&marker=39.1157%2C-77.5636"
+                      loading="lazy"
+                    ></iframe>
+                  </div>
+
+                  <p className="text-xs text-gray-400 mt-3">
+                    Drag to move the map or scroll to zoom.
+                  </p>
+                </div>
+
+                <div className="rounded-[28px] border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-sm text-gray-300">Focus Mode</span>
+                    <span className="text-xs text-gray-400">Click to switch</span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {focusAreas.map((area, index) => (
+                      <button
+                        key={area.label}
+                        type="button"
+                        onClick={() => setActiveFocus(index)}
+                        className={`text-xs px-3 py-1 rounded-full border transition-colors ${
+                          activeFocus === index
+                            ? "bg-white text-black border-white"
+                            : "bg-white/5 text-gray-300 border-white/10 hover:bg-white/10"
+                        }`}
+                      >
+                        {area.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  <motion.div
+                    key={activeFocus}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="rounded-2xl border border-white/10 bg-[#0b0b14] p-4"
+                  >
+                    <p className="text-sm text-gray-200 mb-3">{focusAreas[activeFocus].summary}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {focusAreas[activeFocus].highlights.map((item) => (
+                        <span
+                          key={item}
+                          className="text-[11px] text-gray-200 bg-white/10 border border-white/10 rounded-full px-3 py-1"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
               </div>
-              <div className="text-gray-400 text-sm">Client Satisfaction</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-2 bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
-                &lt;100ms
-              </div>
-              <div className="text-gray-400 text-sm">Average Latency</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-2 bg-gradient-to-r from-cyan-400 to-cyan-600 bg-clip-text text-transparent">
-                24/7
-              </div>
-              <div className="text-gray-400 text-sm">System Uptime</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl mb-2 bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent">
-                Global
-              </div>
-              <div className="text-gray-400 text-sm">Edge Deployment</div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>
