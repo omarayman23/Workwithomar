@@ -12,28 +12,30 @@ export default function App() {
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
-  };
-
-  const renderPage = () => {
-    switch (currentPage) {
-      case "home":
-        return <Home onNavigate={handleNavigate} />;
-      case "work":
-        return <Work onNavigate={handleNavigate} />;
-      case "services":
-        return <Services onNavigate={handleNavigate} />;
-      case "contact":
-        return <Contact />;
-      default:
-        return <Home onNavigate={handleNavigate} />;
-    }
+    setTimeout(() => {
+      const element = document.getElementById(page);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 10);
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a]">
+    <div className="min-h-screen bg-black overflow-x-hidden w-full">
       <ScrollProgress />
       <Navigation currentPage={currentPage} onNavigate={handleNavigate} />
-      {renderPage()}
+      <div id="home">
+        <Home onNavigate={handleNavigate} />
+      </div>
+      <div id="work">
+        <Work onNavigate={handleNavigate} />
+      </div>
+      <div id="services">
+        <Services onNavigate={handleNavigate} />
+      </div>
+      <div id="contact">
+        <Contact />
+      </div>
       <Footer onNavigate={handleNavigate} />
     </div>
   );

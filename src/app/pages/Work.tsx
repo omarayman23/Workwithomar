@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import Masonry from "react-responsive-masonry";
 import { Badge } from "../components/ui/badge";
-import { ExternalLink, Briefcase, Lightbulb, BadgeCheck } from "lucide-react";
+import { Timeline } from "../components/ui/timeline";
+import { ExternalLink, Briefcase, Lightbulb, BadgeCheck, Github, Globe, Chrome } from "lucide-react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 
 interface Project {
@@ -142,7 +142,7 @@ export function Work({ onNavigate }: WorkProps) {
 
   const filteredProjects = projects.filter(p => p.type === activeTab);
   return (
-    <section className="min-h-screen bg-[#0a0a0f] text-white py-32 px-6">
+    <section className="min-h-screen bg-black text-white py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -211,112 +211,257 @@ export function Work({ onNavigate }: WorkProps) {
           </div>
         </motion.div>
 
-        {activeTab !== "certifications" ? (
-          <Masonry columnsCount={2} gutter="24px">
-            {filteredProjects.map((project, index) => {
-              const handleClick = () => {
-                if (project.websiteUrl) {
-                  window.open(project.websiteUrl, "_blank", "noopener,noreferrer");
-                } else if (project.extensionUrl) {
-                  window.open(project.extensionUrl, "_blank", "noopener,noreferrer");
-                }
-              };
-
-              return (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="relative group cursor-pointer"
-                onMouseEnter={() => setHoveredId(project.id)}
-                onMouseLeave={() => setHoveredId(null)}
-                onClick={handleClick}
-              >
-                <div className="relative overflow-hidden rounded-2xl bg-zinc-900 border border-white/5">
-                  <div className={`relative overflow-hidden ${
-                    project.imageFit === "contain" ? "" : "aspect-[4/3]"
-                  }`}>
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className={`w-full transition-transform duration-700 group-hover:scale-110 ${
-                        project.imageFit === "contain" ? "h-auto object-contain" : "h-full object-cover"
-                      }`}
-                    />
-                    
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
-                    
-                    {/* Hover Content */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{
-                        opacity: hoveredId === project.id ? 1 : 0,
-                        y: hoveredId === project.id ? 0 : 20,
-                      }}
-                      transition={{ duration: 0.3 }}
-                      className="absolute inset-0 flex flex-col justify-end p-6"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h3 className="text-2xl mb-1">{project.title}</h3>
-                          {project.client && (
-                            <>
-                              <p className="text-gray-300">{project.client}</p>
-                              <p className="text-sm text-gray-400">{project.industry}</p>
-                            </>
-                          )}
-                          {(project.websiteUrl || project.extensionUrl) && (
-                            <div className="flex gap-2 mt-2">
-                              {project.websiteUrl && (
-                                <a
-                                  href={project.websiteUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                className="text-xs text-[#FFB15C] hover:text-[#FFD166] underline"
-                              >
-                                Website
-                              </a>
-                            )}
-                              {project.extensionUrl && (
-                                <a
-                                  href={project.extensionUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                className="text-xs text-[#FFB15C] hover:text-[#FFD166] underline"
-                              >
-                                Chrome Extension
-                              </a>
-                            )}
-                            </div>
-                          )}
-                        </div>
-                        <ExternalLink className="w-6 h-6 text-white" />
+        {activeTab === "client" ? (
+          <Timeline data={[
+            {
+              title: "Feb 2026 – Present",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center shrink-0">
+                        <img src="/mynaturalme.png" alt="My Natural Me logo" className="w-full h-full object-contain bg-white" />
                       </div>
-                      <p className="text-sm text-gray-300 mb-4">{project.description}</p>
-                    </motion.div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-white mb-1">Web Developer Intern</h3>
+                        <p className="text-sm text-gray-400">My Natural Me · Manassas, VA</p>
+                      </div>
+                    </div>
+                    <a href="https://dementiacaregiversupport.org/" target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-[#FFB15C] hover:text-[#FFD166] border border-[#FFB15C]/30 hover:border-[#FFD166]/50 rounded-full px-3 py-1.5 transition-colors">
+                      <Globe className="w-3.5 h-3.5" /> Website
+                    </a>
                   </div>
-
-                  {/* Tags */}
-                  <div className="p-4 flex flex-wrap gap-2">
-                    {project.tags.map((tag, i) => (
-                      <Badge
-                        key={i}
-                        variant="secondary"
-                        className="bg-white/5 text-gray-300 hover:bg-white/10 border-white/10 rounded-full"
-                      >
-                        {tag}
-                      </Badge>
+                  <ul className="list-disc list-outside ml-4 text-sm text-gray-300 space-y-2 mb-6 leading-relaxed">
+                    <li>Developed and maintained responsive web interfaces to support dementia caregivers.</li>
+                    <li>Improved website performance, accessibility, and overall user experience.</li>
+                  </ul>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["Web Development", "UI/UX", "Performance"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
                     ))}
                   </div>
                 </div>
-              </motion.div>
-              );
-            })}
-          </Masonry>
+              ),
+            },
+            {
+              title: "Jan 2026 – Apr 2026",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center shrink-0">
+                        <img src="/nasa.png" alt="NASA logo" className="w-full h-full object-contain bg-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-white mb-1">AI/ML Engineer</h3>
+                        <p className="text-sm text-gray-400">NASA L'Space NPWEE · Remote</p>
+                      </div>
+                    </div>
+                  </div>
+                  <ul className="list-disc list-outside ml-4 text-sm text-gray-300 space-y-2 mb-6 leading-relaxed">
+                    <li>Proposed a framework for evaluating and improving trust in autonomous systems by integrating explainability, risk assessment, and confidence scoring into agent decision workflows</li>
+                    <li>Reviewed current state-of-the-art validation approaches, identified reliability gaps, and defined measurable metrics to strengthen verification, safety, and mission readiness</li>
+                  </ul>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["Autonomy", "AI Systems", "Space Robotics"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ),
+            },
+            {
+              title: "Feb 2026 – Mar 2026",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center shrink-0">
+                        <img src="/wayfair.png" alt="Wayfair logo" className="w-full h-full object-contain bg-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-white mb-1">AI Automation Extern</h3>
+                        <p className="text-sm text-gray-400">Wayfair · Remote</p>
+                      </div>
+                    </div>
+                    <a href="https://media.licdn.com/dms/image/v2/D4E2DAQGYIL_d3nY5Kw/profile-treasury-image-shrink_8192_8192/B4EZ1qDvA6JEAg-/0/1775600858444?e=1777078800&v=beta&t=hU5AYpPeeWOqFz1_M_cyKq4Ow1-N1GZ_9YOYNmm-FmQ" target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-[#FFB15C] hover:text-[#FFD166] border border-[#FFB15C]/30 hover:border-[#FFD166]/50 rounded-full px-3 py-1.5 transition-colors">
+                      <BadgeCheck className="w-3.5 h-3.5" /> Certificate
+                    </a>
+                  </div>
+                  <ul className="list-disc list-outside ml-4 text-sm text-gray-300 space-y-2 mb-6 leading-relaxed">
+                    <li>Built and orchestrated AI agents using n8n and large-language-model tooling to automate ingestion, analysis, and routing of retail trend data</li>
+                    <li>Developed end-to-end workflows that transformed unstructured web and social inputs into structured insights and actionable business recommendations</li>
+                  </ul>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["AI Agents", "n8n", "LLM", "Automation"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ),
+            },
+            {
+              title: "Oct 2025 – Jan 2026",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg bg-white/10 border border-white/20 overflow-hidden flex items-center justify-center shrink-0">
+                        <img src="/yapn.png" alt="Yapn logo" className="w-full h-full object-contain bg-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-white mb-1">Software Engineer Intern</h3>
+                        <p className="text-sm text-gray-400">Yapn · Springfield, VA</p>
+                      </div>
+                    </div>
+                  </div>
+                  <ul className="list-disc list-outside ml-4 text-sm text-gray-300 space-y-2 mb-6 leading-relaxed">
+                    <li>Built full-stack call analytics dashboard using React, Express.js, AWS DynamoDB, and Retell AI API to track 150+ restaurant phone calls with real-time filtering, success metrics, and data visualization</li>
+                    <li>Developed RESTful API backend with paginated data fetching, rate limiting, and error handling; integrated AWS DynamoDB and third-party AI services for restaurant call management system</li>
+                  </ul>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["React", "Express.js", "AWS DynamoDB", "Retell AI"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ),
+            },
+          ]} />
+        ) : activeTab === "independent" ? (
+          <Timeline data={[
+            {
+              title: "Jan 2026 – Present",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-2xl font-semibold text-white mb-1">Ad Immunity - Ad Blocker</h3>
+                      <p className="text-sm text-gray-400">Browser Extension · Privacy</p>
+                    </div>
+                    <a href="https://chromewebstore.google.com/detail/ad-immunity-ad-blocker/lnoponmddlnbkgkmpkmdpjgclpinplkk" target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-[#FFB15C] hover:text-[#FFD166] border border-[#FFB15C]/30 hover:border-[#FFD166]/50 rounded-full px-3 py-1.5 transition-colors">
+                      <Chrome className="w-3.5 h-3.5" /> Extension
+                    </a>
+                  </div>
+                  <p className="text-sm text-gray-300 mb-6 leading-relaxed">
+                    Ad Immunity is a browser extension that automatically removes ads, pop-ups, and trackers from websites, creating a faster and distraction-free browsing experience. It works in the background on every site, including video platforms, without requiring any setup from the user. Built with a strong focus on privacy, it keeps all data on the user's device and never collects or shares personal information.
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["Browser Extension", "Privacy", "Ad Blocker"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ),
+            },
+            {
+              title: "Jun 2025 – Jan 2026",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-2xl font-semibold text-white mb-1">Tab Saver</h3>
+                      <p className="text-sm text-gray-400">Chrome Extension · TypeScript · AI Integration</p>
+                    </div>
+                    <div className="flex gap-3">
+                      <a href="https://tab-saver-website.vercel.app/" target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-[#FFB15C] hover:text-[#FFD166] border border-[#FFB15C]/30 hover:border-[#FFD166]/50 rounded-full px-3 py-1.5 transition-colors">
+                        <Globe className="w-3.5 h-3.5" /> Website
+                      </a>
+                      <a href="https://chromewebstore.google.com/detail/tab-saver/nonbbacblhbkhblenjgljomlllcppidp" target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-xs text-[#FFB15C] hover:text-[#FFD166] border border-[#FFB15C]/30 hover:border-[#FFD166]/50 rounded-full px-3 py-1.5 transition-colors">
+                        <Chrome className="w-3.5 h-3.5" /> Extension
+                      </a>
+                    </div>
+                  </div>
+                  <p className="text-sm text-gray-300 mb-6 leading-relaxed">
+                    Save and restore browser tabs with AI-powered summaries, auto-save, and smart organization. Built to eliminate tab chaos and help users stay focused.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["Chrome Extension", "TypeScript", "AI Integration", "React"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ),
+            },
+            {
+              title: "Apr – Jun 2025",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-2xl font-semibold text-white mb-1">CoverLetterAI</h3>
+                      <p className="text-sm text-gray-400">AI · Next.js · OpenAI</p>
+                    </div>
+                    <a href="https://cover-letterai.vercel.app/" target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-[#FFB15C] hover:text-[#FFD166] border border-[#FFB15C]/30 hover:border-[#FFD166]/50 rounded-full px-3 py-1.5 transition-colors">
+                      <Globe className="w-3.5 h-3.5" /> Website
+                    </a>
+                  </div>
+                  <p className="text-sm text-gray-300 mb-6 leading-relaxed">
+                    AI-powered cover letter generator that creates personalized, job-tailored cover letters in seconds. Paste a job description and your resume — it does the rest.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["AI", "Next.js", "OpenAI", "Tailwind CSS"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ),
+            },
+            {
+              title: "Feb – Jun 2025",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+                    <div>
+                      <h3 className="text-2xl font-semibold text-white mb-1">Algorithm Visualizer</h3>
+                      <p className="text-sm text-gray-400">React · Data Structures · Education</p>
+                    </div>
+                    <a href="https://algorithm-visuals.vercel.app/" target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-[#FFB15C] hover:text-[#FFD166] border border-[#FFB15C]/30 hover:border-[#FFD166]/50 rounded-full px-3 py-1.5 transition-colors">
+                      <Globe className="w-3.5 h-3.5" /> Website
+                    </a>
+                  </div>
+                  <p className="text-sm text-gray-300 mb-6 leading-relaxed">
+                    Interactive CS learning platform for visualizing and understanding key algorithms and data structures. Designed to make abstract concepts tangible and intuitive.
+                  </p>
+
+                  <div className="flex flex-wrap gap-2 mt-4">
+                    {["React", "Data Structures", "Algorithms", "Education"].map(tag => (
+                      <span key={tag} className="text-[11px] text-gray-300 bg-white/10 border border-white/10 rounded-full px-3 py-1">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              ),
+            },
+            {
+              title: "Other Work",
+              content: (
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+                  <h3 className="text-xl font-semibold text-white mb-2">More on GitHub</h3>
+                  <p className="text-sm text-gray-300 mb-6 leading-relaxed">
+                    Additional experiments, prototypes, and open-source builds — smaller projects and explorations that don't have a dedicated page yet.
+                  </p>
+                  <a
+                    href="https://github.com/omarayman23"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black shadow-lg hover:bg-white/90 transition-colors"
+                  >
+                    <Github className="w-4 h-4" />
+                    View GitHub Profile
+                  </a>
+                </div>
+              ),
+            },
+          ]} />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {certifications.map((cert, index) => {

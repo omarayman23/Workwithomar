@@ -91,7 +91,7 @@ export function Contact() {
   };
 
   return (
-    <section className="min-h-screen bg-[#0a0a0f] text-white py-32 px-6">
+    <section className="min-h-screen bg-black text-white py-32 px-6">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Left Side - CTA & Social */}

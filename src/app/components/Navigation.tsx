@@ -30,7 +30,6 @@ export function Navigation({ currentPage, onNavigate }: NavigationProps) {
   const handleNavClick = (page: string) => {
     onNavigate(page);
     setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
